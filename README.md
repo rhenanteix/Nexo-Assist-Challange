@@ -1,13 +1,33 @@
-# Nexo-Assist---Challange
-um agent de atendimento para o service desk de TI de uma empresa fictícia: o funcionário descreve o problema num chat, e o agent decide se responde uma dúvida, consulta ou atualiza um chamado, abre um chamado novo ou chama um analista.
+# Nexo Assist — React + TypeScript
 
-Agora, um desafio. Você vai construir o Nexo Assist, um agent de atendimento para o service desk de TI de uma empresa fictícia: o funcionário descreve o problema num chat, e o agent decide se responde uma dúvida, consulta ou atualiza um chamado, abre um chamado novo ou chama um analista.
-PRD do desafio (PDF): Acesse aqui
-Protótipo das telas: acesse aqui
-Você pode salvar este formulário e voltar quando terminar. Use ferramentas de IA; na entrevista, vamos conversar sobre o que você construiu.
+Aplicação demonstrativa construída a partir do arquivo `nexo.pen`, contendo seis fluxos de tela: login, chat de abertura de chamado, consulta e transferência, lista de conversas do atendente, atendimento assumido e perfil.
 
-ux > https://app.pen.dev/s/swhm7Xfy1krKDIc-QyqE9J8ZI2xFB0qbNvHIncCXcLg
+## Executar
 
-https://drive.google.com/file/d/1uhSgHcOvrx349nqsjuD1a4VToqOVv9b7/view
+Requer Node.js 20.19+ (ou 22+).
 
-link do processo > https://tally.so/r/OQDKdK
+```bash
+npm install
+npm run dev
+```
+
+Acesse a URL indicada pelo Vite (normalmente http://localhost:5173).
+
+## Funcionalidades
+
+- Login demonstrativo com validação básica (qualquer e-mail válido e senha de pelo menos 4 caracteres).
+- Chat guiado por regras, abertura e consulta de chamados, opções de afetados e confirmação de rascunho.
+- Transferência simulada para o painel do atendente.
+- Painel com pesquisa, filtros, assumir, responder, devolver e encerrar atendimento.
+- Perfil e navegação entre as telas.
+- Persistência de sessão, chamados e mensagens no `localStorage` do navegador.
+
+## Limites da demonstração
+
+Não há servidor, autenticação real, integração com Active Directory, IA, envio de e-mails, SLA calculado ou sincronização entre usuários. A recuperação de senha é apenas ilustrativa. Para produção, integrar API segura, autenticação e banco de dados. Não utilizar este login demonstrativo para credenciais reais.
+
+## Estrutura
+
+- `src/main.tsx`: aplicação, estado e fluxos.
+- `src/style.css`: layout responsivo e identidade visual.
+- `index.html`: entrada do Vite.
