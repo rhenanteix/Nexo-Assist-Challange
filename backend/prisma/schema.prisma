@@ -1,0 +1,33 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "sqlite" url = env("DATABASE_URL") }
+model User { id String @id @default(cuid()) email String @unique name String role String @default("EMPLOYEE") passwordHash String? tickets Ticket[] conversations Conversation[] messages Message[] }
+model Ticket { fingerprint String? @unique id String @id @default(cuid()) number String @unique title String description String type String category String priority String status String @default("OPEN") affected String ownerId String owner User @relation(fields:[ownerId],references:[id]) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt dueAt DateTime resolvedAt DateTime? }
+model Article { id String @id @default(cuid()) title String body String keywords String }
+model Conversation { id String @id @default(cuid()) ownerId String owner User @relation(fields:[ownerId],references:[id]) status String @default("AGENT") assignedToId String? summary String? messageCount Int @default(0) messages Message[] createdAt DateTime @default(now()) updatedAt DateTime @updatedAt }
+model Message { id String @id @default(cuid()) conversationId String conversation Conversation @relation(fields:[conversationId],references:[id]) authorId String? author User? @relation(fields:[authorId],references:[id]) role String text String actions String? createdAt DateTime @default(now()) }
+model Draft { id String @id @default(cuid()) conversationId String @unique payload String intent String createdAt DateTime @default(now()) }
+model Audit { id String @id @default(cuid()) actorId String? action String entityId String? metadata String createdAt DateTime @default(now()) }
+
+// Durable delivery: events remain in the database until acknowledged by the dispatcher.
+model OutboxEvent {
+  id String @id @default(cuid())
+  conversationId String
+  ownerId String
+  type String
+  createdAt DateTime @default(now())
+  deliveredAt DateTime?
+  attempts Int @default(0)
+  lockedUntil DateTime?
+  lockedBy String?
+  nextAttemptAt DateTime?
+}
+
+// Unique per draft prevents two simultaneous confirmations from creating two tickets.
+model TicketOperation {
+  id String @id @default(cuid())
+  conversationId String
+  draftId String @unique
+  ticketId String
+  actorId String
+  createdAt DateTime @default(now())
+}
